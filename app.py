@@ -3,6 +3,7 @@ import os
 import json
 import secrets
 import urllib.request
+from html import escape
 from flask import Flask, jsonify, request, render_template_string
 
 app = Flask(__name__)
@@ -10,7 +11,6 @@ app = Flask(__name__)
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 CHAT_ID = os.environ.get("CHAT_ID", "")
 TEST_SECRET = os.environ.get("TEST_SECRET", "")
-
 
 
 def send_telegram_message(message):
@@ -76,26 +76,25 @@ def test_notification():
     ):
         return "Unauthorized: check your test secret.", 401
 
-    
-message = (
-    "🛍️ New Order Placed! [TEST]\n\n"
-    "<b>Order Number:</b> #LBH-TEST-001\n"
-    "<b>Date:</b> Test Order\n"
-    "<b>Payment:</b> Cash on Delivery\n"
-    "<b>Shipping:</b> Standard Delivery\n\n"
-    "<b>Customer Info</b>\n"
-    "<b>Name:</b> Test Customer\n"
-    "<b>Phone:</b> 01XXXXXXXXX\n"
-    "<b>Email:</b> test@example.com\n"
-    "<b>Address:</b> Test Address, Bangladesh\n\n"
-    "<b>Order Items (1)</b>\n"
-    "1. Sample Borka × 1 = ৳1,500\n\n"
-    "<b>Subtotal:</b> ৳1,500\n"
-    "<b>Discount:</b> ৳0\n"
-    "<b>Shipping:</b> ৳80\n"
-    "<b>Total:</b> ৳1,580\n\n"
-    '<a href="https://example.com">Open Order</a>'
-)
+    message = (
+        "🛍️ New Order Placed! [TEST]\n\n"
+        "<b>Order Number:</b> #LBH-TEST-001\n"
+        "<b>Date:</b> Test Order\n"
+        "<b>Payment:</b> Cash on Delivery\n"
+        "<b>Shipping:</b> Standard Delivery\n\n"
+        "<b>Customer Info</b>\n"
+        "<b>Name:</b> Test Customer\n"
+        "<b>Phone:</b> 01XXXXXXXXX\n"
+        "<b>Email:</b> test@example.com\n"
+        "<b>Address:</b> Test Address, Bangladesh\n\n"
+        "<b>Order Items (1)</b>\n"
+        "1. Sample Borka × 1 = ৳1,500\n\n"
+        "<b>Subtotal:</b> ৳1,500\n"
+        "<b>Discount:</b> ৳0\n"
+        "<b>Shipping:</b> ৳80\n"
+        "<b>Total:</b> ৳1,580\n\n"
+        '<a href="https://example.com">Open Order</a>'
+    )
 
     try:
         send_telegram_message(message)
