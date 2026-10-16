@@ -12,6 +12,7 @@ CHAT_ID = os.environ.get("CHAT_ID", "")
 TEST_SECRET = os.environ.get("TEST_SECRET", "")
 
 
+
 def send_telegram_message(message):
     if not BOT_TOKEN or not CHAT_ID:
         raise RuntimeError("Bot configuration missing")
@@ -19,7 +20,8 @@ def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = json.dumps({
         "chat_id": CHAT_ID,
-        "text": message
+        "text": message,
+        "parse_mode": "HTML"
     }).encode("utf-8")
 
     req = urllib.request.Request(
@@ -74,25 +76,26 @@ def test_notification():
     ):
         return "Unauthorized: check your test secret.", 401
 
-    message = (
-        "🛍️ New Order Placed! [TEST]\n\n"
-        "Order Number: #LBH-TEST-001\n"
-        "Date: Test Order\n"
-        "Payment: Cash on Delivery\n"
-        "Shipping: Standard Delivery\n\n"
-        "Customer Info\n"
-        "Name: Test Customer\n"
-        "Phone: 01XXXXXXXXX\n"
-        "Email: test@example.com\n"
-        "Location: Test Address, Bangladesh\n\n"
-        "Order Items (1)\n"
-        "1. Sample Borka × 1 = ৳1,500\n\n"
-        "Subtotal: ৳1,500\n"
-        "Discount: ৳0\n"
-        "Shipping: ৳80\n"
-        "Total: ৳1,580\n\n"
-        "⚠️ This is a test notification, not a real order."
-    )
+    
+message = (
+    "🛍️ New Order Placed! [TEST]\n\n"
+    "<b>Order Number:</b> #LBH-TEST-001\n"
+    "<b>Date:</b> Test Order\n"
+    "<b>Payment:</b> Cash on Delivery\n"
+    "<b>Shipping:</b> Standard Delivery\n\n"
+    "<b>Customer Info</b>\n"
+    "<b>Name:</b> Test Customer\n"
+    "<b>Phone:</b> 01XXXXXXXXX\n"
+    "<b>Email:</b> test@example.com\n"
+    "<b>Address:</b> Test Address, Bangladesh\n\n"
+    "<b>Order Items (1)</b>\n"
+    "1. Sample Borka × 1 = ৳1,500\n\n"
+    "<b>Subtotal:</b> ৳1,500\n"
+    "<b>Discount:</b> ৳0\n"
+    "<b>Shipping:</b> ৳80\n"
+    "<b>Total:</b> ৳1,580\n\n"
+    '<a href="https://example.com">Open Order</a>'
+)
 
     try:
         send_telegram_message(message)
